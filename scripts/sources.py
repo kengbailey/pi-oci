@@ -136,11 +136,12 @@ def main():
         for key in sorted(npm):
             tf.add(cache / 'npm' / key, arcname='npm/' + key)
         tf.add(upstream, arcname=upstream.name)
-        for name in ('Dockerfile','LICENSE','NOTICE','scripts','config','tracks','build-tools','tests','docs'):
+        for name in ('Dockerfile','.dockerignore','README.md','LICENSE','NOTICE','licenses','scripts','config','tracks','build-tools','tests','docs'):
             def clean(member):
                 return None if 'node_modules' in Path(member.name).parts or '__pycache__' in Path(member.name).parts else member
             tf.add(ROOT / name, arcname='pi-oci/' + name, filter=clean)
         tf.add(output / 'dependency-inventory.json', arcname='dependency-inventory.json')
+        tf.add(output / 'build-info.json', arcname='build-info.json')
     print('Complete source bundle:', bundle)
 
 
