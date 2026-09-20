@@ -1,0 +1,33 @@
+name: Build and test
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      release_minimal:
+        description: Publish Minimal after maintainer review
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  standard:
+    uses: ./.github/workflows/pipeline.yml
+    with:
+      flavor: standard
+      publish: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
+    permissions:
+      contents: write
+      packages: write
+  minimal:
+    uses: ./.github/workflows/pipeline.yml
+    with:
+      flavor: minimal
+      publish: ${{ github.event_name == 'workflow_dispatch' && inputs.release_minimal }}
+    permissions:
+      contents: write
+      packages: write

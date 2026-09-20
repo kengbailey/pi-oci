@@ -1,0 +1,78 @@
+name: Edition pipeline
+on:
+  workflow_call:
+    inputs:
+      flavor:
+        type: string
+        required: true
+      publish:
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3
+        with:
+          platforms: arm
+      - uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
+      - name: Static and publication checks
+        run: python3 -m unittest discover -s tests -p 'test_*.py'
+      - name: Build pinned edition
+        env:
+          FLAVOR: ${{ inputs.flavor }}
+        run: python3 scripts/build.py "$FLAVOR"
+      - name: ARMv7 functional and TUI acceptance
+        env:
+          FLAVOR: ${{ inputs.flavor }}
+        run: python3 tests/run.py "$FLAVOR"
+      - name: Direct runc profile acceptance
+        env:
+          FLAVOR: ${{ inputs.flavor }}
+        run: |
+          command -v runc
+          sudo python3 tests/runc.py "$FLAVOR"
+      - name: Exact source materials and inventory
+        env:
+          FLAVOR: ${{ inputs.flavor }}
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/sources.py "$FLAVOR"
+      - name: Complete release artifacts
+        env:
+          FLAVOR: ${{ inputs.flavor }}
+        run: python3 scripts/finalize.py "$FLAVOR"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: ${{ inputs.flavor }}-armv7
+          path: out/${{ inputs.flavor }}/
+          retention-days: 7
+          if-no-files-found: error
+  publish:
+    needs: build
+    if: inputs.publish && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: ${{ inputs.flavor }}-armv7
+          path: release/
+      - name: Publish versioned image and downloads
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FLAVOR: ${{ inputs.flavor }}
+        run: python3 scripts/publish.py "$FLAVOR" release

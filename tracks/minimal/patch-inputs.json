@@ -1,0 +1,15 @@
+{
+  "pi": "0.86.0",
+  "node": "24.18.1-r0",
+  "source_files": {
+    "dist/config.js": "d10613c9933c612cd6ce705823511b1cea68250de3869b3cf3b5d67418d65344",
+    "dist/core/http-dispatcher.js": "f9aa2c81b0a5958ffba6368506f24c9b202904c234ada19494cdc9c4a1d0e97b",
+    "dist/utils/syntax-highlight.js": "c7334db2aff539424d0fab8a71f1953dcd66adcf21d0b4e1026cdfd25117db68",
+    "node_modules/@earendil-works/pi-ai/dist/compat.js": "df55dca273cb2a7053187b7b29d0fe5b91966a5099ab02d2efe38bb31c3f9738",
+    "node_modules/@earendil-works/pi-ai/dist/image-models.generated.js": "55596b5b156013e8ee0c579882680d3702eb7b19b91e9bcfaefc852233f6332f",
+    "node_modules/@earendil-works/pi-ai/dist/legacy-api-aliases.js": "1b0f1077431ce2d8eeea25172e721c58e6fc1c1a396a731ffb62f2b54672bd12",
+    "node_modules/@earendil-works/pi-ai/dist/models.generated.js": "798e2bebc4e509917e039a5dfc026f86fead0ef352ea07b786ec92458780844e",
+    "node_modules/@earendil-works/pi-ai/dist/providers/all.js": "eb283b6d03ed3f697e6baba6d89826997bc73133799d8aafc10baf9e08413485",
+    "node_modules/@earendil-works/pi-ai/dist/providers/images/register-builtins.js": "c29932ca6dd008a5421bb91e489341f14a8be7d408cbde71894cc15546d37377"
+  }
+}

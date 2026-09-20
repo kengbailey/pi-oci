@@ -1,0 +1,16 @@
+Pi OCI packaging and launcher: MIT, copyright 2026 Pi OCI contributors.
+
+Pi: MIT, copyright 2025 Mario Zechner. See licenses/PI-MIT.txt.
+This project is independent of Pi and Amazon; no endorsement is implied.
+
+The bundled runtime is an aggregation, not wholly MIT-licensed. Alpine packages
+and npm dependencies retain their own licenses. Release dependency-inventory.json
+records installed package versions, licenses, and source provenance. Original
+npm notices are retained; Minimal additionally carries notices for bundled input
+packages. Each binary release must have its matching source archive, including
+exact Alpine aports recipes, patches, and checksum-verified distfiles.
+
+config/seccomp.json is adapted from Moby/Docker's default seccomp policy as
+materialized by Docker 29.5.3. Copyright Moby contributors; Apache License 2.0.
+See licenses/Apache-2.0.txt. It retains SCMP_ACT_ERRNO defaults and the tested
+syscall rules; it is a general container policy, not an agent-command allowlist.

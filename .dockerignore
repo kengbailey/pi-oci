@@ -1,0 +1,8 @@
+**
+!Dockerfile
+!.build/
+!.build/*/
+!.build/*/app/
+!.build/*/app/**
+!scripts/
+!scripts/pi
