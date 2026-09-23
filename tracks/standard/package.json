@@ -2,6 +2,6 @@
   "name": "pi-oci-standard",
   "private": true,
   "dependencies": {
-    "@earendil-works/pi-coding-agent": "0.87.0"
+    "@earendil-works/pi-coding-agent": "0.87.1"
   }
 }
